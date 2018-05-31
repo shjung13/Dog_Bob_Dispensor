@@ -30,10 +30,3 @@ void loop()
         delay(10);                    //delay로 각도의 변화 속도를 조절
     }
 }
-
-
-출처: http://dokkodai.tistory.com/103 [OSHW Alchemist]
-
-출처: http://dokkodai.tistory.com/103 [OSHW Alchemist]
-
-출처: http://dokkodai.tistory.com/103 [OSHW Alchemist]
