@@ -3,16 +3,22 @@
 #define MAX_AMOUNT_OF_BOB 600
 
 #include <Servo.h>   
+#include <hx711.h>
  
 Servo microServo;    
 const int servoPin = SERVO_PIN;    
- 
+
+// Hx711.DOUT - pin #A2
+// Hx711.SCK - pin #A3
+Hx711 scale(A2, A3);
+
 void setup()
 {
     Serial.begin(9600);
     //Serial.println("hello arduino!");
     microServo.attach(servoPin);   
 }
+
 void feed(){
     int angle;
     while(angle < MAX_DEGREE){
