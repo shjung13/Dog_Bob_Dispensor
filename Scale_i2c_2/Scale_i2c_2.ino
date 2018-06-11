@@ -114,13 +114,14 @@ void loop()
 
 double get_weight(){
   double sum = 0;
-  sum = hx.bias_read();
-  return sum;
+  sum = hx.read();
+  double weight = sum * (-0.0022) - 444;
+  return weight;
 }
 
 void show_remain(WiFiEspClient client)
 {
-  double weight = 0;
+  int weight = 0;
   // HTTP headers always start with a response code (e.g. HTTP/1.1 200 OK)
   // and a content-type so the client knows what's coming, then a blank line:
   client.println("HTTP/1.1 200 OK");
@@ -178,18 +179,21 @@ void show_feed(WiFiEspClient client)
   client.println("</html>");
   // The HTTP response ends with another blank line:
   client.println();
-  double weight = 0;
+  int weight = 0;
+  int MAX_WEIGHT = 20;
   weight = get_weight();
-  while(weight * (-1) < 265){
-    myservo.write(60);
+  Serial.print(weight);
+  while(weight < MAX_WEIGHT){
+    myservo.write(60);  
+    Serial.print("1");
     for (pos = 60; pos <= 210; pos += 2) { // goes from 0 degrees to 180 degrees
       // in steps of 1 degree
       myservo.write(pos);              // tell servo to go to position in variable 'pos'
       //delay(15);                       // waits 15ms for the servo to reach the position
-
+      Serial.print(pos);
       weight = get_weight();
 
-      if(weight * (-1) > 265){
+      if(weight > MAX_WEIGHT){
         while(pos > 60){
           pos--;
           myservo.write(pos);    
@@ -199,11 +203,6 @@ void show_feed(WiFiEspClient client)
       }
     }
 
-    // while(weight * (-1) < 265){
-    //   weight = get_weight();
-    //   delay(20);
-    // }
-    // myservo.write(210);
     for (; pos >= 60; pos -= 1) { // goes from 0 degrees to 180 degrees
       // in steps of 1 degree
       myservo.write(pos);              // tell servo to go to position in variable 'pos'
